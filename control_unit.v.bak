@@ -1,0 +1,342 @@
+module control_unit (
+    input z,
+    input [7:0] ins,
+    input xc,
+    input [1:0] status,
+    output reg end_process,
+    output reg [33:0] control_signal
+);
+
+reg [7:0] present=8'd44;
+reg [7:0] next=8'd44;
+
+parameter 
+start1=8'd0;
+fetch1=8'd1;
+fetch2=8'd2;
+rstall1=8'd8;
+lodac1=8'd9;
+lodac2=8'd10;
+macci1=8'd11;
+mccj1=8'd12;
+macck1=8'd13
+mvskr1=8d'14;
+mvsir1=8d'15;
+mvsjr1=8d'16;
+mciac1=8'd17;
+mcjac1=8'd18;
+mckac1=8'd19;
+maaar1=8'd20;
+mvacr1=8'd21;
+mabar1=8'd22;
+mtacr1=8'd23;
+macta1=8'd24;
+mvrac1=8'd25;
+madar1=8'd26;
+stoac1=8'd27;
+rstac1=8'd28;
+rstsj1=8'd29;
+rstsk1=8'd30;
+incsi1=8'd31;
+incsj1=8'd32;
+inck1=8'd33;
+subtr1=8'd34;
+multi1=8'd35;
+addit1=8'd36;
+en01=8'd3;
+en11=8'd4;
+en21=8'd5;
+en31=8'd6;
+enall1=8'd7;
+nop1=8'd37;
+endy1=8'd38;
+endn1=8'd39;
+jumnzy1=8'd40;
+jumnzy2=8'd42;
+jumnzy3=8'd43;
+jumnzn1=8'd41;
+idle=8'd44;
+
+start1_cs = 34'b0000000000000000000000000000000010;
+fetch1_cs = 34'b1000000000000000000000000000010000;
+fetch2_cs = 34'b0000101000000000000000000000000100;
+rstall1_cs = 34'b0000000010000101010000000000000001;
+lodac1_cs = 34'b0000000000000000000100000110001000;
+lodac2_cs = 34'b0001000000000000000000000000000000;
+macci1_cs = 34'b0000000000100000000000000001000000;
+maccj1_cs = 34'b0000000000010000000000000001000000;
+macck1_cs = 34'b0000000000001000000000000001000000;
+mvskr1_cs = 34'b0000000001000000000000000000111100;
+mvsir1_cs = 34'b0000000001000000000000000000110100;
+mvsjr1_cs = 34'b0000000001000000000000000000111000;
+mciac1_cs = 34'b0000000000000000000100000110011100;
+mcjac1_cs = 34'b0000000000000000000100000110100000;
+mckac1_cs = 34'b0000000000000000000100000110100100;
+maaar1_cs = 34'b0010000000000000000000000000101000;
+mvacr1_cs = 34'b0000000001000000000000000001000000;
+mabar1_cs = 34'b0010000000000000000000000000101100;
+mtacr1_cs = 34'b0000000001000000000000000000010100;
+macta1_cs = 34'b0000000100000000000000000001000000;
+mvrac1_cs = 34'b0000000000000000000100000110011000;
+madar1_cs = 34'b0010000000000000000000000000110000;
+stoac1_cs = 34'b0100000000000000000000000001000000;
+rstac1_cs = 34'b0000000000000000000010000000000000;
+rstsj1_cs = 34'b0000000000000001000000000000000000;
+rstsk1_cs = 34'b0000000000000000010000000000000000;
+incsi1_cs = 34'b0000000000000010000000000000000000;
+incsj1_cs = 34'b0000000000000000100000000000000000;
+incsk1_cs = 34'b0000000000000000001000000000000000;
+subtr1_cs = 34'b0000000000000000000100000100011000;
+multi1_cs = 34'b0000000000000000000100000010011000;
+addit1_cs = 34'b0000000000000000000100000000011000;
+jumnzy1_cs = 34'b1000000000000000000000000000010000;
+jumnzy2_cs = 34'b0000100000000000000000000000000100;
+jumnzy3_cs = 34'b0000010000000000000000000000001100;
+jumnzn1_cs = 34'b0000001000000000000000000000000000;
+en01_cs = 34'b0000000000000000000001001000000000;
+en11_cs = 34'b0000000000000000000001010000000000;
+en21_cs = 34'b0000000000000000000001011000000000;
+en31_cs = 34'b0000000000000000000001100000000000;
+enall1_cs = 34'b0000000000000000000001111000000000;
+endy1_cs = 34'b0000000000000000000000000000000000;
+endn1_cs = 34'b0000000000000000000000000000000000;
+nop1_cs = 34'b0000000000000000000000000000000000;
+idle_cs=34'b0000000000000000000000000000000000;
+
+always @(posedge clk)
+begin
+    present<=next;
+end
+
+always @(posedge clk)
+begin
+    if (present==endy1)
+        end_process<=1'b1;
+    else
+        end_process<=1'b0;
+end
+
+always @(present or z or xc or status) begin
+    case(present)
+    idle:begin
+        control_signal<=idle_cs;
+
+        if (status == 2'b01) begin
+            next<=start1;
+        else
+            next<=idle;
+        end
+    end
+
+    start1:begin
+        control_signal<=start1_cs;
+        next<=fetch1;
+    end
+
+    fetch1:begin
+        control_signal<=fetch1_cs;
+        next<=fetch2;
+    end
+
+    fetch2:begin
+        control_signal<= fetch2_cs;
+
+        if (ins <= 8'd7)
+            next<=ins;
+        else if((ins > 8'd7) && (xc==1'b0) )
+            next<=nop1;
+        else if ((ins > 8'd7) && (ins< 8'd37) && (xc==1'b1))
+            next<=ins;
+        else if (((ins==8'd38) || (ins==8'd40)) && (xc==1'b1))
+            next=ins+z;
+    end
+
+    rstall1:begin
+        control_signal<=rstall1_cs;
+        next<=fetch1;
+    end
+
+    lodac1:begin
+        control_signal<=lodac1_cs;
+        next<=lodac2;
+    end
+
+    lodac2:begin
+        control_signal<=lodac2_cs;
+        next<=fetch1;
+    end
+
+    macci1:begin
+        control_signal<=macci1_cs;
+        next<=fetch1;
+    end
+
+    maccj1:begin
+        control_signal<=maccj1_cs;
+        next<=fetch1;
+    end
+
+    macck1:begin
+        control_signal<=macck1_cs;
+        next<=fetch1;
+    end
+
+    mvskr1:begin
+        control_signal<=mvskr1_cs;
+        next<=fetch1;
+    end
+
+    mvsir1:begin
+        control_signal<=mvsir1_cs;
+        next<=fetch1;
+    end
+
+    mvsjr1:begin
+        control_signal<=mvsjr1_cs;
+        next<=fetch1;
+    end
+
+    mciac1:begin
+        control_signal<=mcaiac1_cs;
+        next<=fetch1
+    end
+
+
+    mcjac1:begin
+        control_signal<=mcjac1_cs;
+        next<=fetch1;
+    end
+
+    mckac1:begin
+        control_signal<=mckac1_cs;
+        next<=fetch1;
+    end
+
+    maaar1:begin
+        control_signal<=maaar1_cs;
+        next<=fetch1;
+    end
+    mvacr1:begin
+        control_signal<=mvacr1_sc;
+        next<=fetch1;
+    end
+    mabar1:begin
+        control_signal<=mabar_cs;
+        next<=fetch1;
+    end
+    mtacr1:begin
+        control_signal<=mtacr1_cs;
+        next<=fetch1;
+    end
+    macta1:begin
+        control_signal<=macta1_cs;
+        next<=fetch1;
+    end
+    mvrac1:begin
+        control_signal<=mvrac1;
+        next<=fetch1;
+    end
+    madar1:begin
+        control_signal<=madar1_cs;
+        next<=fetch1;
+    end
+    stoac1:begin
+        control_signal<=stoac1_cs;
+        next<=fetch1;
+    end
+    rstac1:begin
+        control_signal<=rstac1_cs;
+        next<=fetch1;
+    end
+    rstsj1:begin
+        control_signal<=rstsj1_cs;
+        next<=fetch1;
+    end
+    rstsk1:begin
+        control_signal<=rstsk1_cs;
+        next<=fetch1;
+    end
+    incsi1:begin
+        control_signal<=incsi1_cs;
+        next<=fetch1;
+    end
+    incsj1:begin
+        control_signal<=incsj1_cs;
+        next<=fetch1;
+    end
+    incsk1:begin
+        control_signal<=incsk1_cs;
+        next<=fetch1;
+    end
+    subtr1:begin
+        control_signal<=subtr1_cs;
+        next<=fetch1;
+    end
+    multi1:begin
+        control_signal<=multi1_cs;
+        next<=fetch1;
+    end
+    addit1:begin
+        control_signal<=addit1_cs;
+        next<=fetch1;
+    end
+    en01:begin
+        control_signal<=en01_cs;
+        next<=fetch1;
+    end
+    en11:begin
+        control_signal<=en11_cs;
+        next<=fetch1;
+    end
+    en21:begin
+        control_signal<=en21_cs;
+        next<=fetch1;
+    end
+    en31:begin
+        control_signal<=en31_cs;
+        next<=fetch1;
+    end
+    enall1:begin
+        control_signal<=enall1_cs;
+        next<=fetch1;
+    end
+    nop1:begin
+        control_signal<=nop1_cs;
+        next<=fetch1;
+    end
+    endy1:begin
+        control_signal<=endy1_cs;
+    end
+    endn1:begin
+        control_signal<=endyn1_cs;
+        next<=fetch1;
+    end
+    jumnzy1:begin
+        control_signal<=jumnzy1_cs;
+        next<=jumnzy2;
+    end
+    jumnzy2:begin
+        control_signal<=jumnzy2_cs;
+        next<=jumnzy3;
+    end
+    jumnzy3:begin
+        control_signal<=jumnzy3_cs;
+        next<=fetch1;
+    end
+    jumnzn1:begin
+        control_signal<=jumnzn1_cs;
+        next<=fetch1;
+    end
+    default:begin
+        control_signal=idle_cs;
+        next<=idle;
+    end
+
+    endcase
+    
+end
+
+
+
+    
+endmodule
