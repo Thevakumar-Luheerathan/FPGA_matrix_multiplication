@@ -1,10 +1,9 @@
 module instruction_memory(
 input clock,
-input write_en0 ,write_en1 ,write_en2 ,write_en3 ,
 input [7:0] addr0,addr1,addr2,addr3,
 output reg [7:0] instruction );
 
-reg [7:0] ram [127:0];
+reg [7:0] ram [255:0];
 
 parameter EN0 =8'd3;
 parameter EN1 =8'd4;
@@ -158,13 +157,9 @@ end
 
 always @(posedge clock) 
 begin
-if (write_en0==0)
-instruction <= ram[addr0];
-if (write_en1==0)
-instruction <= ram[addr1];
-if (write_en2==0)
-instruction <= ram[addr2];
-if (write_en3==0)
-instruction <= ram[addr3];
+    instruction <= ram[addr0];
+    instruction <= ram[addr1];
+    instruction <= ram[addr2];
+    instruction <= ram[addr3];
 end
 endmodule
