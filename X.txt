@@ -1,0 +1,10 @@
+X is haven't deployed yet .....
+
+    /* X -- */
+    reg_7 x 
+    (
+        .clock(clock),
+        .LD(),                          // <= Control Unit
+        .EN(),                          // <= Bus
+        .dataout()                      // => Control Unit
+    );

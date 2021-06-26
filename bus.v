@@ -10,6 +10,7 @@ input [15:0] R,
 input [7:0] AA,
 input [7:0] AB,
 input [7:0] AD,
+input [7:0] ALU,
 input [7:0] AR,
 input [7:0] DAR,
 input [7:0] CI,
@@ -37,10 +38,11 @@ begin
     5'd10: busout <= AA + 16'd0;
     5'd11: busout <= AB + 16'd0;
     5'd12: busout <= AD + 16'd0;
-    5'd13: busout <= SI + 16'd0;
-    5'd14: busout <= SJ + 16'd0; 
-    5'd15: busout <= SK + 16'd0;
-    5'd16: busout <= AC; 
+    5'd13: busout <= ALU + 16'd0;
+    5'd14: busout <= SI + 16'd0;
+    5'd15: busout <= SJ + 16'd0; 
+    5'd16: busout <= SK + 16'd0;
+    5'd17: busout <= AC; 
     default: busout <= 16'd0;
     endcase  
 end

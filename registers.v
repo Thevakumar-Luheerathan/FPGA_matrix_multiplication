@@ -73,6 +73,9 @@ begin
 end   
 endmodule
 
+
+
+
 module reg_5 (//SI,SJ,SK
 input clock,
 input INC,
@@ -91,6 +94,7 @@ end
 endmodule
 
 
+
 module reg_6 (//AA,AB,AD
 input clock,
 input [7:0] datain,
@@ -102,6 +106,9 @@ begin
     dataout<= datain;   
 end   
 endmodule
+
+
+
 
 module reg_7 (//X
 input clock,
