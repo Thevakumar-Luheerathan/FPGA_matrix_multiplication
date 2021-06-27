@@ -21,12 +21,16 @@ module core0
     input [15:0] dataout0,
 
     output [7:0] addr_instruction_0,/* Instruction Memory */
-    input [7:0] instruction
+    input [7:0] instruction,
+
+    output end_process,
+    input [1:0] status
+    
     );
 
     // ##### Inner connections = Wires ##### //
     wire [15:0] alu_out;            // ALU => AC
-    wire [15:0] alu_ac;             // AC, ALU => Bus = 2
+    wire [15:0] alu_ac;             // AC=> Bus = 2,ALU
     wire [15:0] busout;             // Bus=10 => ALU, CI, CJ, CK, TAC, R, PC, IR, DAR, AR
     wire [7:0] dataout_ci;          // CI => address_module & Bus
     wire [7:0] dataout_cj;          // CJ => address_module & Bus 
@@ -48,6 +52,7 @@ module core0
     wire [33:0] control_signal;     // Control Unit => Bus
     wire [3:0] x_xc;                // X => Control Unit
     
+    assign write_en0=control_signal[32];
     assign datain0 = busout     ; // => DATA MEMORY {WRITE}
     /* AC */
     AC ac 
@@ -107,7 +112,7 @@ module core0
         .SK(dataout_sk),             // <= SK
         .AC(alu_ac),                 // => AC
         .busout(busout)              // => ALU, CI, CJ, CK, TAC, R, PC, IR, DAR, AR
-    );
+   );
     
     /* AR */
     reg_1 ar 
@@ -262,8 +267,8 @@ module core0
         .z(Z),                          // <= z <= AC
         .ins(instruction),              // <= INSTRUCTION MEMORY {INSTRUCTION}
         .xc(x_xc[3]),                      // <= X
-        .status(),                      // <= ???????????????????????????????????????????????????????
-        .end_process(write_en0),        // => DATA MEMORY {ENABLING_WRITE}
+        .status(status),                      // <= status of core 
+        .end_process(end_process),        // => DATA MEMORY {ENABLING_WRITE}
         .control_signal(control_signal) // => Bus
     );
 
