@@ -113,8 +113,8 @@ module core0
     reg_1 ar 
     (
         .clock(clock),
-        .LD(control_signal),            // <= Control Unit
-        .datain(busout),                // <= Bus
+        .LD(control_signal[33]),            // <= Control Unit
+        .datain(busout[7:0]),                // <= Bus
         .dataout(addr_instruction_0)    // => INSTRUCTION MEMORY {ADRESS}
     );
     
@@ -122,10 +122,10 @@ module core0
     reg_2 dar 
     (
         .clock(clock),
-        .LD(control_signal),            // <= Control Unit
-        .INC(control_signal),           // <= Control Unit
-        .RST(control_signal),           // <= Control Unit
-        .datain(busout),                // <= Bus
+        .LD(control_signal[31]),            // <= Control Unit
+        .INC(control_signal[30]),           // <= Control Unit
+        .RST(control_signal[0]),           // <= Control Unit
+        .datain(busout[7:0]),                // <= Bus
         .dataout(addr_data_0)           // => DATA MEMORY {ADRESS}
     );
     
@@ -133,8 +133,8 @@ module core0
     reg_1 ir 
     (
         .clock(clock),
-        .LD(control_signal),            // <= Control Unit
-        .datain(busout),                // <= Bus
+        .LD(control_signal[29]),            // <= Control Unit
+        .datain(busout[7:0]),                // <= Bus
         .dataout(dataout_ir)            // => Bus
     );
     
@@ -142,10 +142,10 @@ module core0
     reg_2 pc 
     (
         .clock(clock),
-        .LD(control_signal),            // <= Control Unit
-        .INC(control_signal),           // <= Control Unit
-        .RST(control_signal),           // <= Control Unit
-        .datain(busout),                // <= Bus
+        .LD(control_signal[28]),            // <= Control Unit
+        .INC(control_signal[27]),           // <= Control Unit
+        .RST(control_signal[1]),           // <= Control Unit
+        .datain(busout[7:0]),                // <= Bus
         .dataout(dataout_pc)            // => Bus
     );
     
@@ -153,8 +153,8 @@ module core0
     reg_4 tac 
     (
         .clock(clock),
-        .LD(control_signal),            // <= Control Unit
-        .RST(control_signal),           // <= Control Unit
+        .LD(control_signal[26]),            // <= Control Unit
+        .RST(control_signal[25]),           // <= Control Unit
         .datain(busout),                // <= Bus
         .dataout(dataout_tac)           // => Bus
     );
@@ -163,7 +163,7 @@ module core0
     reg_3 r 
     (
         .clock(clock),
-        .LD(control_signal),            // <= Control Unit
+        .LD(control_signal[24]),            // <= Control Unit
         .datain(busout),                // <= Bus
         .dataout(dataout_r)             // => Bus
     );
@@ -172,8 +172,8 @@ module core0
     reg_1 ci 
     (
         .clock(clock),
-        .LD(control_signal),            // <= Control Unit
-        .datain(busout),                // <= Bus
+        .LD(control_signal[23]),            // <= Control Unit
+        .datain(busout[7:0]),                // <= Bus
         .dataout(dataout_ci)            // => address_module, Bus
     );
     
@@ -181,8 +181,8 @@ module core0
     reg_1 cj 
     (
         .clock(clock),
-        .LD(control_signal),            // <= Control Unit
-        .datain(busout),                // <= Bus
+        .LD(control_signal[22]),            // <= Control Unit
+        .datain(busout[7:0]),                // <= Bus
         .dataout(dataout_cj)            // => address_module, Bus
     );
     
@@ -190,8 +190,8 @@ module core0
     reg_1 ck 
     (
         .clock(clock),
-        .LD(control_signal),            // <= Control Unit
-        .datain(busout),                // <= Bus
+        .LD(control_signal[21]),            // <= Control Unit
+        .datain(busout[7:0]),                // <= Bus
         .dataout(dataout_ck)            // => address_module, Bus
     );
     
@@ -223,8 +223,8 @@ module core0
     reg_5 si 
     (
         .clock(clock),
-        .INC(control_signal),           // <= Control Unit
-        .RST(control_signal),           // <= Control Unit
+        .INC(control_signal[19]),           // <= Control Unit
+        .RST(control_signal[20]),           // <= Control Unit
         .dataout(dataout_si)            // => address_module, Bus
     );
     
@@ -232,8 +232,8 @@ module core0
     reg_5 sj
     (
         .clock(clock),
-        .INC(control_signal),           // <= Control Unit
-        .RST(control_signal),           // <= Control Unit
+        .INC(control_signal[17]),           // <= Control Unit
+        .RST(control_signal[18]),           // <= Control Unit
         .dataout(dataout_sj)            // => address_module, Bus
     );
     
@@ -241,8 +241,8 @@ module core0
     reg_5 sk 
     (
         .clock(clock),
-        .INC(control_signal),           // <= Control Unit
-        .RST(control_signal),           // <= Control Unit
+        .INC(control_signal[15]),           // <= Control Unit
+        .RST(control_signal[16]),           // <= Control Unit
         .dataout(dataout_sk)            // => address_module, Bus
     );
 
@@ -250,8 +250,8 @@ module core0
     reg_7 x 
     (
         .clock(clock),
-        .LD(control_signal),            // <= Control Unit
-        .EN(control_signal),            // <= Bus
+        .LD(control_signal[12]),            // <= Control Unit
+        .EN(control_signal[11:9]),            // <= Bus
         .dataout(x_xc)                  // => Control Unit
     );
 
@@ -261,7 +261,7 @@ module core0
         .clk(clock),
         .z(Z),                          // <= z <= AC
         .ins(instruction),              // <= INSTRUCTION MEMORY {INSTRUCTION}
-        .xc(x_xc),                      // <= X
+        .xc(x_xc[3]),                      // <= X
         .status(),                      // <= ???????????????????????????????????????????????????????
         .end_process(write_en0),        // => DATA MEMORY {ENABLING_WRITE}
         .control_signal(control_signal) // => Bus
