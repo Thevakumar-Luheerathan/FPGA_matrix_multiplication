@@ -1,17 +1,4 @@
-`include "AC.v"
-`include "reg_1.v"
-`include "reg_2.v"
-`include "reg_3.v"
-`include "reg_4.v"
-`include "reg_5.v"
-`include "reg_6.v"
-`include "reg_7.v"
-`include "address_module.v"
-`include "ALU.v"
-`include "Bus.v"
-`include "control_unit.v"
-
-module core1 
+module core_1 
     (
     input clock,                    // CLOCK
 
