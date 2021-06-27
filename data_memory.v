@@ -1,4 +1,4 @@
-module datamemory (
+module data_memory (
 input clock,
 input write_en0 ,write_en1 ,write_en2 ,write_en3 ,
 input [7:0] addr0,addr1,addr2,addr3,
