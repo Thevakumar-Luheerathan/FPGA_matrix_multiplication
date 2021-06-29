@@ -252,7 +252,7 @@ module core_0
     (
         .clk(clock),
         .z(Z),                          // <= z <= AC
-        .ins(instruction),              // <= INSTRUCTION MEMORY {INSTRUCTION}
+        .ins(dataout_ir),              // <= INSTRUCTION MEMORY {INSTRUCTION}
         .xc(x_xc[3]),                      // <= X
         .status(status),                      // <= status of core 
         .end_process(end_process),        // => DATA MEMORY {ENABLING_WRITE}
