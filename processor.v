@@ -63,7 +63,4 @@ module processor (
         .end_process(end_process[0]),
         .status(status3)
     );
-    
-
-    
 endmodule
