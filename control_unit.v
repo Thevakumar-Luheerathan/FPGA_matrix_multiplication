@@ -117,7 +117,7 @@ begin
         end_process<=1'b0;
 end
 
-always @(present or z or xc or status) begin
+always @(present or z or xc or status or ins) begin
     case(present)
     idle:begin
         control_signal<=idle_cs;
