@@ -7,7 +7,7 @@ output reg [15:0] dataout,
 output    z
 );
 
-assign z= (dataout==16'd0)? 1'd0:1'd1;
+assign z= (dataout==16'd0)? 1'd1:1'd0;
 
 always @(posedge clock) 
 begin
