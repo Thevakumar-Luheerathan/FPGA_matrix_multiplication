@@ -113,7 +113,7 @@ end
 
 always @(posedge clk)
 begin
-    if (present==endy1)
+    if (present==endn1)
         end_process<=1'b1;
     else
         end_process<=1'b0;
@@ -312,10 +312,11 @@ always @(present or z or xc or status or ins) begin
     end
     endy1:begin
         control_signal<=endy1_cs;
+        next<=fetch1;
     end
     endn1:begin
         control_signal<=endn1_cs;
-        next<=fetch1;
+        
     end
     jumnzy1:begin
         control_signal<=jumnzy1_cs;
