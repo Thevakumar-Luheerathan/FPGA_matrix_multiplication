@@ -15,6 +15,7 @@ reg [7:0] next=8'd44;
 parameter start1=8'd0;
 parameter fetch1=8'd1;
 parameter fetch2=8'd2;
+parameter fetch3=8'd45;
 parameter rstall1=8'd8;
 parameter lodac1=8'd9;
 parameter lodac2=8'd10;
@@ -61,6 +62,7 @@ parameter idle=8'd44;
 parameter start1_cs = 34'b0000000000000000000000000000000010;
 parameter fetch1_cs = 34'b1000000000000000000000000000010000;
 parameter fetch2_cs = 34'b0000101000000000000000000000000100;
+parameter fetch3_cs = 34'b0000000000000000000000000000000000 ;
 parameter rstall1_cs = 34'b0000000010000101010000000000000001;
 parameter lodac1_cs = 34'b0000000000000000000100000110001000;
 parameter lodac2_cs = 34'b0001000000000000000000000000000000;
@@ -140,7 +142,11 @@ always @(present or z or xc or status or ins) begin
 
     fetch2:begin
         control_signal<= fetch2_cs;
+        next<=fetch3;
+    end
 
+    fetch3:begin
+        control_signal<= fetch3_cs;
         if (ins <= 8'd7)
             next<=ins;
         else if((ins > 8'd7) && (xc==1'b0) )
