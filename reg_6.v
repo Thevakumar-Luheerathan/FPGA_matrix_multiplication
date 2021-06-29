@@ -4,7 +4,7 @@ input [7:0] datain,
 output reg [7:0] dataout
 );
 
-always @(posedge clock) 
+always @(negedge clock) 
 begin
     dataout<= datain;   
 end   

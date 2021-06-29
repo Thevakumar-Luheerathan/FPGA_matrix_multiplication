@@ -5,7 +5,7 @@ input RST,
 output reg [7:0] dataout
 );
 
-always @(posedge clock) 
+always @(negedge clock) 
 begin
 if (INC==1)
     dataout<= dataout + 8'd1;

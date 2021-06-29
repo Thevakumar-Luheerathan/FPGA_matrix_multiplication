@@ -2,10 +2,12 @@ module reg_7 (//X
 input clock,
 input LD,
 input [2:0] EN,
-output reg [3:0] dataout
+output reg[3:0] dataout=4'b1111
 );
 
-always @(posedge clock) 
+//reg[4:0] dataout=4'b1111;
+
+always @(negedge clock) 
 begin
     if (LD==1)
         case (EN)
