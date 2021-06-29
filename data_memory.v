@@ -1,5 +1,8 @@
 module data_memory (
 input clock,
+input write_en_file,
+input [15:0] data_file,
+input [7:0] addr_file,
 input write_en0 ,write_en1 ,write_en2 ,write_en3 ,
 input [7:0] addr0,addr1,addr2,addr3,
 input [15:0] datain0,datain1,datain2,datain3,
@@ -9,6 +12,8 @@ reg [15:0] ram [255:0];
 
 always @(posedge clock)
 begin
+    if (write_en_file==1)
+        ram[addr_file]<=data_file;
     if (write_en0 == 1)
         ram[addr0] <= datain0;
     else 
