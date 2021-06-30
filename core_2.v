@@ -1,15 +1,15 @@
 module core_2 
     (
     input clock,                    // CLOCK
-
-    output write_en0,               /* Data Memory */
+    /* Data Memory */
+    output write_en0,               
     output [7:0] addr_data_0,
     output [15:0] datain0,
     input [15:0] dataout0,
-
-    output [7:0] addr_instruction_0,/* Instruction Memory */
+    /* Instruction Memory */
+    output [7:0] addr_instruction_0,
     input [7:0] instruction,
-
+    
     output end_process,
     input [1:0] status
     
@@ -252,7 +252,7 @@ module core_2
     (
         .clk(clock),
         .z(Z),                          // <= z <= AC
-        .ins(instruction),              // <= INSTRUCTION MEMORY {INSTRUCTION}
+        .ins(dataout_ir),              // <= INSTRUCTION MEMORY {INSTRUCTION}
         .xc(x_xc[1]),                      // <= X
         .status(status),                      // <= status of core 
         .end_process(end_process),        // => DATA MEMORY {ENABLING_WRITE}
