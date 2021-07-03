@@ -80,8 +80,8 @@ def compile(input_file,out_b="bin",out_d="int"):
 
 if __name__=="__main__":
     if (len(sys.argv)==4):
-        compile(sys.argv[1],sys.argv[2],sys.argv[3])
+        compile(sys.argv[1],sys.argv[3],sys.argv[2])
     elif ((len(sys.argv)==3)):
-        compile(sys.argv[1],sys.argv[2])
+        compile(sys.argv[1],out_d=sys.argv[2])
     elif ((len(sys.argv)==2)):
         compile(sys.argv[1])
