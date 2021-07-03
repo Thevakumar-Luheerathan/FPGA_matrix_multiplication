@@ -1,0 +1,22 @@
+1)
+--------------------------------------------------
+control unit end process
+always @(posedge clk)
+begin
+    if (present==endn1)
+        end_process<=1'b1;
+    else
+        end_process<=1'b0;
+end
+
+always @(posedge clk)
+begin
+    if (present==endn1)
+        end_process<=1'b1;
+    else if (status==2'b00)
+        end_process<=1'b1;
+    
+    else
+        end_process<=1'b0;
+end
+------------------------------------------------------
