@@ -50,8 +50,8 @@ def compile(input_file,out_b="bin",out_d="int"):
             i = i.split()[0]
             if (i in list(conversion.keys())):
                 int_list.append(str(conversion[i])+'\n')
-            else:
-                int_list.append(i+'\n')
+            elif (i[0:3]=="8'd"):
+                int_list.append(i[3:]+'\n')
         print (int_list)
         ins_int.writelines(int_list)
         ins_int.close()
@@ -63,7 +63,7 @@ def compile(input_file,out_b="bin",out_d="int"):
             if (j in list(conversion.keys())):
                 n=format(conversion[j],'08b')
                 bin_list.append(str(n)+'\n')
-            else:
+            elif (i[0:3]=="8'd"):
                 bin_list.append(i+'\n')
             #n = bin(conversion[j]).replace("0b","")
         print (bin_list)
