@@ -35,10 +35,12 @@ module simulation();
     integer instr_txt_file;
     integer data_scan_file;
     integer instr_scan_file;
+    integer dataout_txt_file;
 
-    //reg[8:0] data_file_name="data.txt";
-    //reg[8:0] ins_file_name="ins4.txt";
+    //reg[80:0] data_file_name="data.txt";
+    reg[80:0] ins_file_name="ins4.txt";
     integer core_count=4;
+
     integer count=0;
     reg[7:0] c_i,c_j,c_k;
 
@@ -49,12 +51,13 @@ module simulation();
     initial begin
         clk<=1'b0;
         state<=mem_write;
-        data_txt_file = $fopen("data.txt", "r+");
+        data_txt_file = $fopen("data.txt", "r");
+        dataout_txt_file = $fopen("dataout.txt", "w");
         if (data_txt_file == 0) begin
             $display("data_file handle was NULL");
             $finish;
         end
-        instr_txt_file=$fopen("ins4.txt", "r");
+        instr_txt_file=$fopen(ins_file_name, "r");
         if (instr_txt_file == 0) begin
             $display("instr_file handle was NULL");
             $finish;
@@ -211,14 +214,16 @@ module simulation();
            
        end
        if (end_process==eof_core && state==processing)begin
-            state<= mem_read;           
+            state<= mem_read;  
+            data_addr_file<=data_addr_file+1'd1;         
            //storing data
        end
        if (state==mem_read)begin
-           if(data_addr_file<c_i*c_j*c_k)begin
-               $fdisplay(data_txt_file,dataout_file);
+           if(data_addr_file<=c_i*c_j+c_j*c_k+c_i*c_k+3)begin
+               data_addr_file<=data_addr_file+1'd1;
+               $fdisplay(dataout_txt_file,dataout_file);
            end
-           data_addr_file<=data_addr_file+1'd1;
+           
        end
    end
 endmodule
