@@ -36,6 +36,8 @@ module simulation();
     integer data_scan_file;
     integer instr_scan_file;
     integer dataout_txt_file;
+    integer clock_count=0;
+    integer perfomance_txt_file;
 
     //reg[80:0] data_file_name="data.txt";
     reg[80:0] ins_file_name="ins4.txt";
@@ -182,6 +184,7 @@ module simulation();
            end
        end
        if (state==processing)begin
+           clock_count=clock_count+1;
            
            if (core_count==4)begin
                 status0 <=2'b01;
@@ -214,6 +217,8 @@ module simulation();
            
        end
        if (end_process==eof_core && state==processing)begin
+            perfomance_txt_file= $fopen("performance.txt", "a");  
+            $fdisplay(perfomance_txt_file,"Matrix size - (",c_i,c_j,")x(",c_j,c_k,")                    Cores -",core_count,"                   Clock count - ",clock_count);
             state<= mem_read;  
             data_addr_file<=data_addr_file+1'd1;         
            //storing data
