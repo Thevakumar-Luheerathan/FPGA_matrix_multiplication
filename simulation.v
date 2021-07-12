@@ -41,9 +41,9 @@ module simulation();
     integer perfomance_txt_file;
 
     //reg[80:0] data_file_name="data.txt";
-    reg[80:0] ins_file_name="ins1.txt";
-    reg[100:0] dataout_file_name="dataout1.txt";
-    integer core_count=1;
+    reg[80:0] ins_file_name="ins4.txt";
+    reg[100:0] dataout_file_name="dataout4.txt";
+    integer core_count=4;
 
     integer count=0;
     reg[7:0] c_i,c_j,c_k;
