@@ -1,4 +1,4 @@
-`timescale 10ps / 1ps
+`timescale 1ns / 10ps
 module simulation();
     parameter mem_write = 2'd1;
     parameter processing = 2'd2;
@@ -9,7 +9,8 @@ module simulation();
     reg[1:0] state;
 
     reg [1:0] status0, status1 ,status2, status3; //Turn on each core
-    wire [15:0] dataout_file,dataout0,dataout1,dataout2,dataout3;//data from DM
+    wire signed  [15:0] dataout_file;
+    wire  [15:0]dataout0,dataout1,dataout2,dataout3;//data from DM
     wire [7:0] instruction0, instruction1, instruction2, instruction3;// instruction from IM
 
     wire [3:0] end_process;
@@ -40,8 +41,9 @@ module simulation();
     integer perfomance_txt_file;
 
     //reg[80:0] data_file_name="data.txt";
-    reg[80:0] ins_file_name="ins4.txt";
-    integer core_count=4;
+    reg[80:0] ins_file_name="ins1.txt";
+    reg[100:0] dataout_file_name="dataout1.txt";
+    integer core_count=1;
 
     integer count=0;
     reg[7:0] c_i,c_j,c_k;
@@ -54,7 +56,7 @@ module simulation();
         clk<=1'b0;
         state<=mem_write;
         data_txt_file = $fopen("data.txt", "r");
-        dataout_txt_file = $fopen("dataout.txt", "w");
+        dataout_txt_file = $fopen(dataout_file_name, "w");
         if (data_txt_file == 0) begin
             $display("data_file handle was NULL");
             $finish;
@@ -227,6 +229,9 @@ module simulation();
            if(data_addr_file<=c_i*c_j+c_j*c_k+c_i*c_k+3)begin
                data_addr_file<=data_addr_file+1'd1;
                $fdisplay(dataout_txt_file,dataout_file);
+           end
+           else begin
+               $stop;
            end
            
        end
